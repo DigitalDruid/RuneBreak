@@ -9,5 +9,4 @@ public class LoseCollider : MonoBehaviour {
 		levelManager = GameObject.FindObjectOfType <LevelManager>();
 		levelManager.LoadLevel("Lose");
 	}
-	
 }

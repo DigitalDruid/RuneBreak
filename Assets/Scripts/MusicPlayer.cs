@@ -14,19 +14,13 @@ public class MusicPlayer : MonoBehaviour {
 			print ("Duplicate music player self-destructing!");
 		} else {
 			instance = this;
-			GameObject.DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
 		}
 	}
 	
 	// Use this for initialization
-	void Start () {
-		
-		
-		
-	}
+	void Start () { }
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () { }
 }

@@ -15,25 +15,21 @@ public class Brick : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		isBreakable = (this.tag == "Breakable");
+		isBreakable = (tag == "Breakable");
+
 		//keep track of breakable bricks
-		if (isBreakable){
-			breakableCount++;
-		}
-		levelManager = GameObject.FindObjectOfType<LevelManager>();
+		if (isBreakable) breakableCount++;
+
+		levelManager = FindObjectOfType<LevelManager>();
 		timesHit = 0;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () { }
 	
 	void OnCollisionEnter2D(Collision2D col){
 		AudioSource.PlayClipAtPoint (crack, transform.position, 0.5f);
-		if (isBreakable){
-			HandleHits();
-		}
+		if (isBreakable) HandleHits();
 	}
 	
 	void HandleHits(){
@@ -58,7 +54,7 @@ public class Brick : MonoBehaviour {
 	void LoadSprites(){
 		int spriteIntex = timesHit - 1;
 		if (hitSprites[spriteIntex] !=null){
-			this.GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIntex];
+            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIntex];
 		}else{
 			Debug.LogError("Sprite Missing for brick!");
 		}
