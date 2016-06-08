@@ -5,18 +5,24 @@ public class BrickMap : MonoBehaviour {
 
     //public MultiBrick[][] bricks;
     public MultiBrick brickRef;
-    public int[][] map = new int[10][];
-    
+    public int[][][] map;
+
+    int level { get { return LevelManager.currentLevel; } }
+    int idx { get { return level - 1; } }
+
     public const int BRICK_X = 0, 
                      BRICK_Y = 1, 
                      BRICK_TYPE = 2, 
                      BRICK_POWER = 3;
     
-    public int BrickCount { get { return map.Length; } }
-    public int index { get { return BrickCount - 1; } }
+    //public int BrickCount { get { return map[idx].Length; } }
+    
+    // WARNING!: using this getter increments its value
+    int _brk = -1; int brk { get { _brk++; return _brk; } }
     
     // Use this for initialization
     void Start() {
+        map = new int[1][][];
         loadBricks();
         setBricks();
     }
@@ -25,24 +31,25 @@ public class BrickMap : MonoBehaviour {
         return new int[4] { x, y, BT(color), BP(powerUp) };
     }
     void loadBricks() {
-        //map[index] = BrickArray(10, 10, MultiBrick.RED, PowerUp.SPEED);
-        map[index] = new int[4] { 10, 10, BT(MultiBrick.RED), BP(PowerUp.SPEED) };
-        //map[index] = BrickArray(11, 11);
-        //map[index] = BrickArray(12, 12, MultiBrick.GREEN, PowerUp.PADDLE_GROW);
-        //map[index] = BrickArray(13, 13, MultiBrick.GREY);
+        const int bricksInLevelOne = 4;
+        map[0] = new int[bricksInLevelOne][] {
+            // { x, y, color, powerup }
+            BrickArray( 10, 10, MultiBrick.RED,   PowerUp.SPEED),
+            BrickArray(  5,  5, MultiBrick.GREEN),
+            BrickArray( 11, 11), 
+            BrickArray( 0, 0, MultiBrick.GREY)
+        };
     }
 
     void setBricks() {
-        Debug.Log(map[0][0].ToString());
-        //foreach (int[] brick in map) {
-            //Vector3 pos = new Vector3();
-            //pos.x = brick[BRICK_X];
-            //pos.y = brick[BRICK_Y];
-
-            //MultiBrick newBrick = Instantiate(brickRef, pos, Quaternion.identity) as MultiBrick;
-            //newBrick.type = BT(brick[BRICK_TYPE]);
-            //newBrick.powerupType = BP(brick[BRICK_POWER]);
-        //}
+        foreach (int[][] thisLevel in map) {
+            foreach (int[] thisBrick in thisLevel) { makeBrick(thisBrick); }
+        }
+    }
+    void makeBrick (int[] brickStats) {
+        MultiBrick newBrick = Instantiate(brickRef, new Vector3(brickStats[BRICK_X], brickStats[BRICK_Y]), Quaternion.identity) as MultiBrick;
+        newBrick.type = BT(brickStats[BRICK_TYPE]);
+        newBrick.powerupType = BP(brickStats[BRICK_POWER]);
     }
     // returns BrickType as string
     public string BT (int typeInt) {

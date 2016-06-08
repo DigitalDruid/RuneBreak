@@ -6,6 +6,9 @@ public class LevelManager : MonoBehaviour {
 
     public int curSceneIndex { get { return SceneManager.GetActiveScene().buildIndex; } }
 
+    public static int levels;
+    public static int currentLevel = 1;
+
     public void LoadLevel(string name){
 		Debug.Log ("Level load: " + name);
 		Brick.breakableCount = 0;
