@@ -11,6 +11,7 @@ public class Brick : MonoBehaviour {
 	private bool isBreakable;
 	
 	private int timesHit;
+    //private GameManager gameManager;
 	private LevelManager levelManager;
 	
 	// Use this for initialization
@@ -20,7 +21,12 @@ public class Brick : MonoBehaviour {
 		//keep track of breakable bricks
 		if (isBreakable) breakableCount++;
 
-		levelManager = FindObjectOfType<LevelManager>();
+        //gameManager = GameManager.instance;
+        //levelManager = GameManager.instance.levelManager;
+
+        //gameManager = FindObjectOfType<GameManager>();
+        levelManager = FindObjectOfType<LevelManager>();
+
 		timesHit = 0;
 	}
 	
@@ -52,9 +58,9 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void LoadSprites(){
-		int spriteIntex = timesHit - 1;
-		if (hitSprites[spriteIntex] !=null){
-            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIntex];
+		int spriteIndex = timesHit - 1;
+		if (hitSprites[spriteIndex] !=null){
+            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
 		}else{
 			Debug.LogError("Sprite Missing for brick!");
 		}

@@ -4,8 +4,13 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour {
 
-	public void LoadLevel(string name){
-		Debug.Log ("Level load: " +name);
+    public int curSceneIndex { get { return SceneManager.GetActiveScene().buildIndex; } }
+
+    public static int levels;
+    public static int currentLevel = 1;
+
+    public void LoadLevel(string name){
+		Debug.Log ("Level load: " + name);
 		Brick.breakableCount = 0;
         SceneManager.LoadScene(name);
 	}
@@ -17,10 +22,11 @@ public class LevelManager : MonoBehaviour {
 	
 	public void LoadNextLevel(){
 		Brick.breakableCount = 0;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(curSceneIndex + 1);
 	}
 	
 	public void BrickDestroyed(){
 		if(Brick.breakableCount <= 0) LoadNextLevel();
 	}
+
 }
