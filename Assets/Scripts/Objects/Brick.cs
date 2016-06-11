@@ -2,16 +2,21 @@
 using System.Collections;
 
 public class Brick : MonoBehaviour {
-	
+
+    public MultiBrick parent;
+    public MultiBrick Parent { get { return parent; } set { parent = value; } }
+
 	public AudioClip crack;
 	public Sprite[] hitSprites;
 	public static int breakableCount = 0;
 	public GameObject smoke;
-	
-	private bool isBreakable;
+
+    LevelManager levelManager { get { return (GameManager.instance.levelManager) ? GameManager.instance.levelManager :
+                                             (LevelManager.instance)    ? LevelManager.instance    : FindObjectOfType<LevelManager>(); } }
+
+    private bool isBreakable;
 	
 	private int timesHit;
-	private LevelManager levelManager;
 	
 	// Use this for initialization
 	void Start () {
@@ -20,7 +25,6 @@ public class Brick : MonoBehaviour {
 		//keep track of breakable bricks
 		if (isBreakable) breakableCount++;
 
-		levelManager = FindObjectOfType<LevelManager>();
 		timesHit = 0;
 	}
 	
@@ -41,6 +45,7 @@ public class Brick : MonoBehaviour {
 			levelManager.BrickDestroyed();
 			PuffSmoke();
 			Destroy(gameObject);
+            Destroy(Parent);
 		}else{
 			LoadSprites();
 		}
@@ -52,9 +57,9 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void LoadSprites(){
-		int spriteIntex = timesHit - 1;
-		if (hitSprites[spriteIntex] !=null){
-            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIntex];
+		int spriteIndex = timesHit - 1;
+		if (hitSprites[spriteIndex] !=null){
+            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
 		}else{
 			Debug.LogError("Sprite Missing for brick!");
 		}
