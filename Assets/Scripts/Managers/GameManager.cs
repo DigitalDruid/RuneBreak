@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
 
-    public static LevelManager levelManager { get { return (!LevelManager.instance) ? FindObjectOfType<LevelManager>() : LevelManager.instance; } }
+    public LevelManager levelManager { get { return (LevelManager.instance) ? LevelManager.instance : FindObjectOfType<LevelManager>(); } }
 
     public Paddle paddle;
     public Ball ball;
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
     public bool autoPlay, startSmall, startBig;
 
     public int startingLevel { get { return levelManager.startingLevel; } set { levelManager.startingLevel = value; } }
-    public int currentLevel  { get { return levelManager.currentLevel; }  set { levelManager.currentLevel  = value; } }
+    public int currentLevel  { get { return LevelManager.currentLevel; }  set { LevelManager.currentLevel  = value; } }
 
     public float padSpeed = 1.0f;
     public int ballPower = 1;
@@ -29,21 +29,11 @@ public class GameManager : MonoBehaviour {
     public int playerLives { get { return lives; } set { lives = value; } }
     public int playerScore { get { return score; } set { score = value; } }
     
-    
+    public static bool isRunning = false;
 
 	void Awake () {
-        if (instance != null) {
-            Destroy(gameObject);
-        } else {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        if (instance != null) { Destroy(gameObject); } else { instance = this; DontDestroyOnLoad(gameObject); }
         
-        //if(!levelManager) { levelManager = FindObjectOfType<LevelManager>(); }
-        //if (!paddle) paddle = FindObjectOfType<Paddle>();
-        //if (!ball) ball = FindObjectOfType<Ball>();
-        
-        //levelManager = FindObjectOfType<LevelManager>();
         paddle = FindObjectOfType<Paddle>();
         ball = FindObjectOfType<Ball>();
 
@@ -60,10 +50,4 @@ public class GameManager : MonoBehaviour {
         ball2.transform.position = paddle.transform.position + ball2.paddleToBallVector;
         ball2.gameObject.SetActive(true);
     }
-    /*
-    void OnLevelWasLoaded()
-    {
-        //if(!levelManager) { levelManager = FindObjectOfType<LevelManager>(); }
-        if (!paddle) paddle = FindObjectOfType<Paddle>();
-    }//*/
 }

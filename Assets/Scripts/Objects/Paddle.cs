@@ -16,7 +16,7 @@ public class Paddle : MonoBehaviour {
     public void shrink() { size -= (size > 1) ? 1 : 0; }
 
 	void Start(){
-		ball = GameObject.FindObjectOfType<Ball>();
+		ball = FindObjectOfType<Ball>();
 
         if (GameManager.instance.startBig) { grow(); }
         else if (GameManager.instance.startSmall) { shrink(); }

@@ -2,17 +2,21 @@
 using System.Collections;
 
 public class Brick : MonoBehaviour {
-	
+
+    public MultiBrick parent;
+    public MultiBrick Parent { get { return parent; } set { parent = value; } }
+
 	public AudioClip crack;
 	public Sprite[] hitSprites;
 	public static int breakableCount = 0;
 	public GameObject smoke;
-	
-	private bool isBreakable;
+
+    LevelManager levelManager { get { return (GameManager.instance.levelManager) ? GameManager.instance.levelManager :
+                                             (LevelManager.instance)    ? LevelManager.instance    : FindObjectOfType<LevelManager>(); } }
+
+    private bool isBreakable;
 	
 	private int timesHit;
-    //private GameManager gameManager;
-	private LevelManager levelManager;
 	
 	// Use this for initialization
 	void Start () {
@@ -20,12 +24,6 @@ public class Brick : MonoBehaviour {
 
 		//keep track of breakable bricks
 		if (isBreakable) breakableCount++;
-
-        //gameManager = GameManager.instance;
-        //levelManager = GameManager.instance.levelManager;
-
-        //gameManager = FindObjectOfType<GameManager>();
-        levelManager = FindObjectOfType<LevelManager>();
 
 		timesHit = 0;
 	}
@@ -47,6 +45,7 @@ public class Brick : MonoBehaviour {
 			levelManager.BrickDestroyed();
 			PuffSmoke();
 			Destroy(gameObject);
+            Destroy(Parent);
 		}else{
 			LoadSprites();
 		}

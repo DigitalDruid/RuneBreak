@@ -5,10 +5,12 @@ public class Ball : MonoBehaviour {
 
     private Paddle paddle;
     public Vector3 paddleToBallVector;
-    private bool hasStarted = false, multiBallReady = false, launchMultiball = false;
+    private bool hasStarted { get { return GameManager.isRunning; } set { GameManager.isRunning = value; } }
+    private bool multiBallReady = false, launchMultiball = false;
 
     // Use this for initialization
     void Start() {
+        hasStarted = false;
         paddle = FindObjectOfType<Paddle>();
         paddleToBallVector = transform.position - paddle.transform.position;
     }
@@ -34,12 +36,12 @@ public class Ball : MonoBehaviour {
         }
     }
 	void OnCollisionEnter2D (Collision2D collision){
-		Vector2 tweak = new Vector2 (Random.Range(0f, 0.5f), Random.Range (0f,0.5f));
+		Vector2 tweak = new Vector2 (Random.Range(-1.5f, 1.5f), Random.Range (-0.1f,0.6f));
 		
 		/* ball does not trigger sound when the ball strikes a brick that is ready to be destroyed
 			not 100% sure why, could be because the brick is not there to trigger the sound*/
 		if(hasStarted){
-			GetComponent<AudioSource>().Play ();
+			GetComponent<AudioSource>().Play();
 			GetComponent<Rigidbody2D>().velocity += tweak;
 		}
 	}

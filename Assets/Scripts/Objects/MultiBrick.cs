@@ -18,14 +18,17 @@ public class MultiBrick : MonoBehaviour {
         setBrickType();
 	}
     void OnDestroy() {
-        setPowerUpType();
-        powerUp.gameObject.SetActive(true);
+        if (GameManager.isRunning) {
+            setPowerUpType();
+            powerUp.gameObject.SetActive(true);
+        }
     }
     void setBrickType() {
         Brick bb = (type == RED)   ? inst(red)   as Brick :
                    (type == GREEN) ? inst(green) as Brick :
                    (type == BLUE)  ? inst(blue)  as Brick :
                    (type == GREY)  ? inst(grey)  as Brick : inst(red) as Brick;
+        bb.Parent = this;
     }
     void setPowerUpType() {
         powerUp.type = powerupType;
