@@ -54,6 +54,7 @@ Temporary Items
 /obj
 
 *.csproj
+*.csproj.user
 *.sln
 *.userprefs
 *.pidb*
