@@ -3,24 +3,17 @@ using System.Collections;
 
 public class MusicPlayer : MonoBehaviour {
 	
-	static MusicPlayer instance = null;
+	static MusicPlayer instance;
 	
 	void Awake(){
-		Debug.Log("Music player Awake " + GetInstanceID());
-		Debug.Log("Music player Start " +GetInstanceID());
-		
 		if (instance != null){
 			Destroy (gameObject);
-			print ("Duplicate music player self-destructing!");
+			Debug.Log("Duplicate music player self-destructing!");
 		} else {
 			instance = this;
             DontDestroyOnLoad(gameObject);
 		}
+		Debug.Log("Music player Awake " + GetInstanceID());
+		Debug.Log("Music player Start " + GetInstanceID());
 	}
-	
-	// Use this for initialization
-	void Start () { }
-	
-	// Update is called once per frame
-	void Update () { }
 }

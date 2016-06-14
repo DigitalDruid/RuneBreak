@@ -11,56 +11,34 @@ public class MultiBrick : MonoBehaviour {
     public Brick red, green, blue, grey;
     public PowerUp powerUp;
 
+    public AudioClip CrackSound, BreakSound;
+
 	// Use this for initialization
 	void Start () {
         setBrickType();
-        setPowerUpType();
-	}
-	void Awake() {
-    }
-	// Update is called once per frame
-	void Update () {
-	
 	}
     void OnDestroy() {
-        powerUp.gameObject.SetActive(true);
-    }
-
-    void setBrickType() {
-        Brick bb;
-        switch (type) {
-            case GREEN:
-                bb = inst(green) as Brick; break;
-            case BLUE:
-                bb = inst(blue) as Brick; break;
-            case GREY:
-                bb = inst(grey) as Brick; break;
-            case RED: default:
-                bb = inst(red) as Brick; break;
+        if (GameManager.isRunning) {
+            setPowerUpType();
+            powerUp.gameObject.SetActive(true);
         }
     }
-
+    void setBrickType() {
+        Brick bb = (type == RED)   ? inst(red)   as Brick :
+                   (type == GREEN) ? inst(green) as Brick :
+                   (type == BLUE)  ? inst(blue)  as Brick :
+                   (type == GREY)  ? inst(grey)  as Brick : inst(red) as Brick;
+        bb.Parent = this;
+    }
     void setPowerUpType() {
         powerUp.type = powerupType;
-        PowerUp pp;
-        switch (powerupType) {
-            case PowerUp.EXTRA_LIFE:
-                pp = inst(powerUp.life) as PowerUp; break;
-            case PowerUp.SPEED:
-                pp = inst(powerUp.speed) as PowerUp; break;
-            case PowerUp.POWER:
-                pp = inst(powerUp.power) as PowerUp; break;
-            case PowerUp.PADDLE_GROW:
-                pp = inst(powerUp.big) as PowerUp; break;
-            case PowerUp.PADDLE_SHRINK:
-                pp = inst(powerUp.small) as PowerUp; break;
-            case PowerUp.MULTI_BALL:
-                pp = inst(powerUp.multi) as PowerUp; break;
-            case PowerUp.NONE: default:
-                pp = null; break;
-        }
+        PowerUp pp = (powerupType == PowerUp.EXTRA_LIFE)    ? inst(powerUp.life)  as PowerUp :
+                     (powerupType == PowerUp.SPEED)         ? inst(powerUp.speed) as PowerUp :
+                     (powerupType == PowerUp.POWER)         ? inst(powerUp.power) as PowerUp :
+                     (powerupType == PowerUp.PADDLE_GROW)   ? inst(powerUp.big)   as PowerUp :
+                     (powerupType == PowerUp.PADDLE_SHRINK) ? inst(powerUp.small) as PowerUp :
+                     (powerupType == PowerUp.MULTI_BALL)    ? inst(powerUp.multi) as PowerUp : null;
     }
-
     Object inst (Object original) {
         return Instantiate(original, gameObject.transform.position, Quaternion.identity) as Object;
     }
