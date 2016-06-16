@@ -44,7 +44,7 @@ public class LevelManager : MonoBehaviour {
         Brick.breakableCount = 0;
         if (!SceneManager.GetSceneByName(name).isLoaded || forceLoad) {
             unloadScene(name);
-            Debug.Log("Load Sceme: " + name);
+            Debug.Log("Load Scene: " + name);
             SceneManager.LoadScene(name, mode);
         } else {
             Debug.Log("GoTo Scene: " + name);
