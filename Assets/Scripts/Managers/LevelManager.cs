@@ -64,6 +64,9 @@ public class LevelManager : MonoBehaviour {
 		Application.Quit();
 	}	
 	public void LoadNextLevel(){
+        ProgressManager.completedLevels = currentLevel;
+        ProgressManager.setScore(currentLevel, GameManager.instance.playerScore);
+        GameManager.instance.playerScore = 0;
         if (currentLevel < levels) {
             currentLevel++;
             LoadLevel(LEVEL, true);
