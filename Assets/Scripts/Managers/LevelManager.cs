@@ -78,6 +78,7 @@ public class LevelManager : MonoBehaviour {
 		if(Brick.breakableCount <= 0) LoadNextLevel();
 	}
     public void LoseGame() {
+        GameManager.isRunning = false;
         foreach (Object obj in GetComponents<PowerUp>()) { Destroy(obj); }
         foreach (Object obj in GetComponents<MultiBrick>()) { Destroy(obj); }
         foreach (Object obj in GetComponents<Brick>()) { Destroy(obj); }

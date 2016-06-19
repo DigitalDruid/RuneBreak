@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour {
         ball = FindObjectOfType<Ball>();
 
         playerLives = startingLives;
+        playerScore = 0;
         currentLevel = startingLevel;
 
         if (startSmall) smallPaddle = true;

@@ -9,7 +9,7 @@ public class StageSelector : MonoBehaviour {
     public int _stageNumber;
     public string stageNumber { get { return _text.text; } set { _text.text = value; } }
     
-    public bool locked { get { return (_stageNumber != 1 && _stageNumber > ProgressManager.completedLevels); } }
+    public bool locked { get { return (_stageNumber != 1 && _stageNumber >= ProgressManager.completedLevels); } }
 
     public Image _image;
     public Sprite _lockSprite;
@@ -19,7 +19,7 @@ public class StageSelector : MonoBehaviour {
     public Text _text;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         levelManager = GameManager.instance.levelManager;
         Init();
@@ -41,6 +41,7 @@ public class StageSelector : MonoBehaviour {
     }
     void SetLockState()
     {
+        Debug.Log("LevelSelector "+_text.text + " locked = " + locked);
         if (locked)
         {
             _image.sprite = _lockSprite;
@@ -49,6 +50,7 @@ public class StageSelector : MonoBehaviour {
         }
         else
         {
+            Debug.Log("unlocking LevelSelector " + _text.text);
             _image.sprite = _unlockSprite;
             _text.text = _stageNumber.ToString();
             _button.onClick.AddListener(() => levelManager.LoadLevel(_stageNumber));

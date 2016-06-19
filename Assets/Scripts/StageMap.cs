@@ -7,15 +7,15 @@ public class StageMap : MonoBehaviour {
 
     static float size = 200.0f;
     Vector3[] positions = new Vector3[9] {
-        new Vector3(-size,-size),
-        new Vector3(   0,-200),
-        new Vector3( 200,-200),
-        new Vector3(-200,   0),
-        new Vector3(   0,   0),
-        new Vector3( 200,   0),
-        new Vector3(-200, 200),
-        new Vector3(   0, 200),
-        new Vector3( 200, 200)
+        new Vector3(-size,  size, 0),
+        new Vector3(    0,  size, 0),
+        new Vector3( size,  size, 0),
+        new Vector3(-size,     0, 0),
+        new Vector3(    0,     0, 0),
+        new Vector3( size,     0, 0),
+        new Vector3(-size, -size, 0),
+        new Vector3(    0, -size, 0),
+        new Vector3( size, -size, 0)
     };
 	// Use this for initialization
 	void Awake () {
@@ -26,6 +26,10 @@ public class StageMap : MonoBehaviour {
             Debug.Log("selector ID: " + sel.GetInstanceID());
             sel._stageNumber = (i + 1);
             Debug.Log("selector Stage: " + sel._stageNumber);
+            sel.transform.parent = transform;
+            sel.enabled = true;
+            sel.gameObject.SetActive(true);
+            sel.gameObject.layer = gameObject.layer;
         }
         Debug.Log("setting selectors complete");
 	}
