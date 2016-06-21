@@ -1,41 +1,42 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class StageMap : MonoBehaviour {
 
-    public StageSelector selectorReference;
+    public StageSelector [] selectors;
+    public Button prevPageButton, nextPageButton;
 
-    static float size = 200.0f;
-    Vector3[] positions = new Vector3[9] {
-        new Vector3(-size,  size, 0),
-        new Vector3(    0,  size, 0),
-        new Vector3( size,  size, 0),
-        new Vector3(-size,     0, 0),
-        new Vector3(    0,     0, 0),
-        new Vector3( size,     0, 0),
-        new Vector3(-size, -size, 0),
-        new Vector3(    0, -size, 0),
-        new Vector3( size, -size, 0)
-    };
-	// Use this for initialization
+    public void prevPage() { loadPage(--currentPage); }
+    public void nextPage() { loadPage(++currentPage); }
+
+    int currentPage = 1;
+    int stageCount, pageCount;
+
+    int IndexOnPage (int stageNumber) { return (stageNumber-1) % 9; }
+
+    // Use this for initialization
 	void Awake () {
-        Debug.Log("setting selectors for " + ProgressManager.levelMap.Length + " stages...");
-        for (int i = 0; i < ProgressManager.levelMap.Length; i++) {
-            StageSelector sel = Instantiate(selectorReference, positions[i], Quaternion.identity) as StageSelector;
-
-            sel._stageNumber = (i + 1);
-            sel.transform.parent = gameObject.transform;
-
-            //sel.GetComponent<RectTransform>().localPosition = positions[i]; //new Vector3(0, 0, 0);
-            sel.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-
-            sel.Init();
+        stageCount = ProgressManager.levelMap.Length;
+        pageCount = Mathf.CeilToInt(stageCount / 9) + 1;
+        loadPage(currentPage);
+	}
+    void loadPage(int pageNumber) {
+        for (int j = 0; j < 9; j++) {
+            int sN = ((pageNumber - 1) * 9) + (j + 1);
+            if (sN <= stageCount) {
+                setBtn(selectors[j]);
+                selectors[j]._stageNumber = sN;
+                selectors[j].Init();
+            } else {
+                setBtn(selectors[j], false);
+            }
         }
-        Debug.Log("setting selectors complete");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        if (pageNumber == 1) setBtn(prevPageButton, false); else setBtn(prevPageButton);
+        if (pageNumber == pageCount) setBtn(nextPageButton, false); else setBtn(nextPageButton);
+    }
+    void setBtn (Behaviour btn, bool enabled = true) {
+        btn.gameObject.SetActive(enabled);
+        btn.enabled = enabled;
+    }
 }

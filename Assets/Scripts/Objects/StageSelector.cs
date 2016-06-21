@@ -9,7 +9,11 @@ public class StageSelector : MonoBehaviour {
     public int _stageNumber;
     public string stageNumber { get { return _text.text; } set { _text.text = value; } }
     
-    public bool locked { get { return (_stageNumber != 1 && _stageNumber >= ProgressManager.completedLevels); } }
+    public bool locked {
+        get {
+            if (_stageNumber != 1) return (_stageNumber >= ProgressManager.completedLevels) || (_stageNumber > ProgressManager.levelMap.Length); else return false;
+        }
+    }
 
     public Image _image;
     public Sprite _lockSprite;
