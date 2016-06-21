@@ -16,6 +16,7 @@ public class LoseCollider : MonoBehaviour {
             case "PowerUp":
             default:
                 Destroy(trigger);
+                Destroy(trigger.transform.parent);
                 break;
         }
 	}
